@@ -340,10 +340,11 @@ fn mol_from_inchi() {
 
 #[test]
 fn mol_has_substruct_match() {
-    let mol = ROMol::from_smiles("CCO").unwrap();
+    let mol = ROMol::from_smiles("C[C@@H](C(=O)O)N").unwrap();
     let query1 = ROMol::from_smarts("[#6]-[OH]").unwrap();
-    let query2 = ROMol::from_smarts("[#6]-[OH0]").unwrap();
+    let query2 = ROMol::from_smarts("C[C@H]([CX3]=[OX1])N").unwrap();
 
-    assert_eq!(mol.substruct_match(query1, SubstructMatchParameters::new()).len(), 1);
-    assert_eq!(mol.substruct_match(query2, SubstructMatchParameters::new()).len(), 0);
+    assert_eq!(mol.substruct_match(&query1, &SubstructMatchParameters::new()).len(), 1);
+    assert_eq!(mol.substruct_match(&query2, &SubstructMatchParameters::new().use_chirality(true)).len(), 0);
+    assert_eq!(mol.substruct_match(&query2, &SubstructMatchParameters::new().use_chirality(false)).len(), 1);
 }

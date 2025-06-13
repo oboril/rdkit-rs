@@ -47,31 +47,43 @@ impl SubstructMatchParameters {
         rdkit_sys::substruct_match_ffi::get_uniquify(&self.ptr)
     }
 
-    pub fn set_use_chirality(&mut self, what: bool) {
-        rdkit_sys::substruct_match_ffi::set_use_chirality(&mut self.ptr, what)
+    pub fn use_chirality(mut self, what: bool) -> SubstructMatchParameters{
+        rdkit_sys::substruct_match_ffi::set_use_chirality(&mut self.ptr, what);
+        self
     }
 
-    pub fn set_use_enhanced_stereo(&mut self, what: bool) {
-        rdkit_sys::substruct_match_ffi::set_use_enhanced_stereo(&mut self.ptr, what)
+    pub fn use_enhanced_stereo(mut self, what: bool) -> SubstructMatchParameters{
+        rdkit_sys::substruct_match_ffi::set_use_enhanced_stereo(&mut self.ptr, what);
+        self
     }
 
-    pub fn set_aromatic_matches_conjugated(&mut self, what: bool) {
-        rdkit_sys::substruct_match_ffi::set_aromatic_matches_conjugated(&mut self.ptr, what)
+    pub fn aromatic_matches_conjugated(mut self, what: bool) -> SubstructMatchParameters{
+        rdkit_sys::substruct_match_ffi::set_aromatic_matches_conjugated(&mut self.ptr, what);
+        self
     }
 
-    pub fn set_use_query_query_matches(&mut self, what: bool) {
-        rdkit_sys::substruct_match_ffi::set_use_query_query_matches(&mut self.ptr, what)
+    pub fn use_query_query_matches(mut self, what: bool) -> SubstructMatchParameters{
+        rdkit_sys::substruct_match_ffi::set_use_query_query_matches(&mut self.ptr, what);
+        self
     }
 
-    pub fn set_use_generic_matchers(&mut self, what: bool) {
-        rdkit_sys::substruct_match_ffi::set_use_generic_matchers(&mut self.ptr, what)
+    pub fn use_generic_matchers(mut self, what: bool) -> SubstructMatchParameters{
+        rdkit_sys::substruct_match_ffi::set_use_generic_matchers(&mut self.ptr, what);
+        self
     }
 
-    pub fn set_recursion_possible(&mut self, what: bool) {
-        rdkit_sys::substruct_match_ffi::set_recursion_possible(&mut self.ptr, what)
+    pub fn recursion_possible(mut self, what: bool) -> SubstructMatchParameters{
+        rdkit_sys::substruct_match_ffi::set_recursion_possible(&mut self.ptr, what);
+        self
     }
 
-    pub fn set_uniquify(&mut self, what: bool) {
-        rdkit_sys::substruct_match_ffi::set_uniquify(&mut self.ptr, what)
+    pub fn uniquify(mut self, what: bool) -> SubstructMatchParameters{
+        rdkit_sys::substruct_match_ffi::set_uniquify(&mut self.ptr, what);
+        self
+    }
+
+    pub fn max_matches(mut self, value: u32) -> SubstructMatchParameters {
+        rdkit_sys::substruct_match_ffi::set_max_matches(&mut self.ptr, value);
+        self
     }
 }
