@@ -134,6 +134,8 @@ fn main() {
         "Fingerprints",
         // "GenericGroups",
         "GraphMol",
+        "Inchi",
+        "RDInchiLib",
         "MolStandardize",
         // "MolTransforms",
         // "PartialCharges",

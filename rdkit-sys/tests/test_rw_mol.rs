@@ -324,3 +324,11 @@ $"#;
     assert!(!mol.is_null());
     // println!("{}", mol.as_smile());
 }
+
+#[test]
+fn inchi_to_mol_test() {
+    let inchi = "InChI=1S/H2O/h1H2";
+    let_cxx_string!(inchi = inchi);
+    let rw_mol = rdkit_sys::rw_mol_ffi::inchi_to_mol(&inchi, true, true).unwrap();
+    assert!(!rw_mol.is_null());
+}

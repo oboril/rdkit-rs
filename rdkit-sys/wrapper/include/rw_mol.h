@@ -13,4 +13,6 @@ std::shared_ptr<RWMol> rw_mol_from_rw_mol(const std::shared_ptr<RWMol> &mol);
 std::shared_ptr<ROMol> rw_mol_to_ro_mol(std::shared_ptr<RWMol> mol);
 
 std::shared_ptr<RWMol> smarts_to_mol(const std::string &smarts);
+
+std::shared_ptr<RWMol> inchi_to_mol(const std::string &inchi, bool sanitize, bool remove_hs);
 } // namespace RDKit

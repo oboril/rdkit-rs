@@ -25,5 +25,7 @@ pub mod ffi {
         pub fn rw_mol_to_ro_mol(mol: SharedPtr<RWMol>) -> SharedPtr<ROMol>;
 
         pub fn smarts_to_mol(smarts: &CxxString) -> Result<SharedPtr<RWMol>>;
+
+        pub fn inchi_to_mol(inchi: &CxxString, sanitize: bool, remove_hs: bool) -> Result<SharedPtr<RWMol>>;
     }
 }

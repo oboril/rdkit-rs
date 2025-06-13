@@ -91,5 +91,5 @@ Make sure the header files and compiled binaries are in path:
 
 Now you should be able to compile rust projects with rdkit as a dependency!
 
-export CPLUS_INCLUDE_PATH="/home/honza/Desktop/temp/rdkit_cpp/rdkit/Code"
+export CPLUS_INCLUDE_PATH="/home/honza/Desktop/temp/rdkit_cpp/rdkit/Code:/home/honza/Desktop/temp/rdkit_cpp/rdkit/External"
 export LIBRARY_PATH="/home/honza/Desktop/temp/rdkit_cpp/rdkit/lib"
