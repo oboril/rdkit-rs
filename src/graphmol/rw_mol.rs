@@ -54,6 +54,16 @@ impl RWMol {
         let ptr = rdkit_sys::rw_mol_ffi::smarts_to_mol(&smarts)?;
         Ok(RWMol { ptr })
     }
+
+    pub fn from_inchi(inchi: &str, sanitize: bool, remove_hs: bool) -> Result<Self, Box<dyn std::error::Error>> {
+        let_cxx_string!(inchi = inchi);
+
+        let ptr = rdkit_sys::rw_mol_ffi::inchi_to_mol(&inchi, sanitize, remove_hs)?;
+        if ptr.is_null() {
+            return Err(Box::from("Failed to parse InChI"));
+        }
+        Ok(RWMol { ptr })
+    }
 }
 
 impl Clone for RWMol {

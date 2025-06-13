@@ -7,6 +7,8 @@ use rdkit::{
 #[test]
 fn test_romol() {
     let _ = ROMol::from_smiles("c1ccccc1C(=O)NC").unwrap();
+    let _ = ROMol::from_smarts("$([CX3]=[OX1]),$([CX3+]-[OX1-])").unwrap();
+    let _ = ROMol::from_inchi("InChI=1S/H2O/h1H2", true, true).unwrap();
 }
 
 #[test]
@@ -327,4 +329,21 @@ fn mol_to_molblock_test() {
     let romol = ROMol::from_smiles(&smiles).unwrap();
     let molblock = romol.to_molblock();
     assert_eq!(molblock, "\n     RDKit          2D\n\n  2  1  0  0  0  0  0  0  0  0999 V2000\n    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n    1.2990    0.7500    0.0000 C   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\nM  END\n");
+}
+
+#[test]
+fn mol_from_inchi() {
+    let inchi = "InChI=1S/H2O/h1H2";
+    let rwmol = RWMol::from_inchi(inchi, true, true).unwrap();
+    assert_eq!(rwmol.as_smiles(), "O");
+}
+
+#[test]
+fn mol_has_substruct_match() {
+    let mol = ROMol::from_smiles("CCO").unwrap();
+    let query1 = ROMol::from_smarts("[#6]-[OH]").unwrap();
+    let query2 = ROMol::from_smarts("[#6]-[OH0]").unwrap();
+
+    assert_eq!(mol.substruct_match(query1, SubstructMatchParameters::new()).len(), 1);
+    assert_eq!(mol.substruct_match(query2, SubstructMatchParameters::new()).len(), 0);
 }

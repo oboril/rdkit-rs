@@ -34,6 +34,7 @@ bool get_recursion_possible(const std::shared_ptr<SubstructMatchParameters> &par
 	return params->recursionPossible;
 }
 bool get_uniquify(const std::shared_ptr<SubstructMatchParameters> &params) { return params->uniquify; }
+unsigned int get_max_matches(const std::shared_ptr<SubstructMatchParameters> &params) { return params->maxMatches; }
 
 void set_use_chirality(std::shared_ptr<SubstructMatchParameters> &params, bool what) { params->useChirality = what; }
 void set_use_enhanced_stereo(std::shared_ptr<SubstructMatchParameters> &params, bool what) {
@@ -52,6 +53,9 @@ void set_recursion_possible(std::shared_ptr<SubstructMatchParameters> &params, b
 	params->recursionPossible = what;
 }
 void set_uniquify(std::shared_ptr<SubstructMatchParameters> &params, bool what) { params->uniquify = what; }
+void set_max_matches(std::shared_ptr<SubstructMatchParameters> &params, unsigned int value) {
+	params->maxMatches = value;
+}
 std::unique_ptr<std::vector<SubstructMatchItem>>
 substruct_matchvect_type_to_vec_substruct_match_item(const MatchVectType &match_vect) {
 	std::vector<SubstructMatchItem> *match_items = new std::vector<SubstructMatchItem>();

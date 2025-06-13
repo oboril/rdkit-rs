@@ -25,6 +25,7 @@ pub mod ffi {
         pub fn get_use_generic_matchers(params: &SharedPtr<SubstructMatchParameters>) -> bool;
         pub fn get_recursion_possible(params: &SharedPtr<SubstructMatchParameters>) -> bool;
         pub fn get_uniquify(params: &SharedPtr<SubstructMatchParameters>) -> bool;
+        pub fn get_max_matches(params: &SharedPtr<SubstructMatchParameters>) -> u32;
 
         pub fn set_use_chirality(params: &mut SharedPtr<SubstructMatchParameters>, what: bool);
         pub fn set_use_enhanced_stereo(
@@ -45,6 +46,7 @@ pub mod ffi {
         );
         pub fn set_recursion_possible(params: &mut SharedPtr<SubstructMatchParameters>, what: bool);
         pub fn set_uniquify(params: &mut SharedPtr<SubstructMatchParameters>, what: bool);
+        pub fn set_max_matches(params: &mut SharedPtr<SubstructMatchParameters>, value: u32);
 
         pub fn substruct_matchvect_type_to_vec_substruct_match_item(
             matchvect: &MatchVectType,

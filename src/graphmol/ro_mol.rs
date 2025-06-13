@@ -3,7 +3,7 @@ use std::fmt::{Debug, Formatter};
 use cxx::let_cxx_string;
 use rdkit_sys::*;
 
-use crate::{Atom, Fingerprint, RWMol};
+use crate::{Atom, Fingerprint, RWMol, MoleculeProperties, substruct_match, SubstructMatchParameters, SubstructMatchItem};
 
 pub struct ROMol {
     pub(crate) ptr: cxx::SharedPtr<ro_mol_ffi::ROMol>,
@@ -96,6 +96,22 @@ impl ROMol {
 
     pub fn update_property_cache(&mut self, strict: bool) {
         ro_mol_ffi::ro_mol_update_property_cache(&mut self.ptr, strict)
+    }
+
+    pub fn properties(&self) -> MoleculeProperties {
+        MoleculeProperties::from_molecule(self)
+    }
+
+    pub fn from_smarts(smarts: &str) -> Option<ROMol> {
+        RWMol::from_smarts(smarts).ok().map(|mol| mol.to_ro_mol())
+    }
+
+    pub fn from_inchi(inchi: &str, sanitize: bool, remove_hs: bool) -> Option<ROMol> {
+        RWMol::from_inchi(inchi, sanitize, remove_hs).ok().map(|mol| mol.to_ro_mol())
+    }
+
+    pub fn substruct_match(&self, query: &ROMol, params: &SubstructMatchParameters) -> Vec<Vec<SubstructMatchItem>> {
+        substruct_match(self, query, params)
     }
 }
 

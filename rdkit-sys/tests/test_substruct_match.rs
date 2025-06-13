@@ -28,4 +28,9 @@ fn test_substruct_match_as_bool() {
         .collect::<Vec<_>>();
 
     assert_eq!(testable_hits.len(), 14);
+
+    let mut match_params_2 = new_substruct_match_parameters();
+    set_max_matches(&mut match_params_2, 4);
+    let hits = substruct_match(&mol, &query, &match_params_2);
+    assert_eq!(hits.len(), 4);
 }
