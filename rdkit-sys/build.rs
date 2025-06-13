@@ -1,4 +1,4 @@
-const CPP_VERSION_FLAG: &str = "-std=c++17";
+const CPP_VERSION_FLAG: &str = "-std=c++20";
 
 fn main() {
     if std::env::var("DOCS_RS").is_ok() {
@@ -8,6 +8,7 @@ fn main() {
     env_logger::init();
 
     let use_conda = std::env::var("CARGO_FEATURE_DYNAMIC_LINKING_FROM_CONDA").is_ok();
+    let link_statically = std::env::var("CARGO_FEATURE_STATIC_LINKING").is_ok();
 
     let mut lib_paths = vec![];
     let mut include_paths = vec![];
@@ -45,19 +46,24 @@ fn main() {
         ("macos", "aarch64", _) => {
             include_paths.push("/opt/homebrew/include".to_string());
             include_paths.push("/opt/homebrew/include/rdkit".to_string());
-            lib_paths.push("/opt/homebrew/lib".to_string())
+            lib_paths.push("/opt/homebrew/lib".to_string());
         }
         ("linux", _, _) => {
             include_paths.push("/usr/local/include".to_string());
             include_paths.push("/usr/local/include/rdkit".to_string());
             include_paths.push("/usr/include".to_string());
             include_paths.push("/usr/include/rdkit".to_string());
+            lib_paths.push("/usr/lib/x86_64-linux-gnu/".to_string());
         }
         (unsupported_os, unsupported_arch, use_conda) => panic!(
             "sorry, rdkit-sys doesn't support {}/{}/use_conda={} at this time",
             unsupported_os, unsupported_arch, use_conda
         ),
     };
+
+    if let Ok(library_path) = std::env::var("LIBRARY_PATH") {
+        lib_paths.push(library_path);
+    }
 
     let dir = std::fs::read_dir("src/bridge").unwrap();
     let rust_files = dir
@@ -117,7 +123,7 @@ fn main() {
     }
     // println!("cargo:rustc-link-lib=static=c++");
 
-    for lib in &[
+    let mut libs: Vec<_> = vec![
         // "Catalogs",
         // "ChemReactions",
         // "ChemTransforms",
@@ -138,9 +144,40 @@ fn main() {
         "SmilesParse",
         // "Subgraphs",
         "SubstructMatch",
-    ] {
-        println!("cargo:rustc-link-lib=dylib=RDKit{}", lib);
+    ];
+
+    // for static linking, all libraries need to be included
+    // as the symbols are referenced within rdkit
+    if link_statically {
+        libs.extend(vec![
+            "Alignment",
+            "coordgen",
+            "Catalogs",
+            "ChemReactions",
+            "ChemTransforms",
+            "CIPLabeler",
+            "Depictor",
+            "GenericGroups",
+            "MolAlign",
+            "MolTransforms",
+            "PartialCharges",
+            "RDGeometryLib",
+            "RingDecomposerLib",
+            "Subgraphs",
+        ]);
     }
 
-    println!("cargo:rustc-link-lib=dylib=boost_serialization");
+    for lib in &libs {
+        if !link_statically {
+            println!("cargo:rustc-link-lib=dylib=RDKit{}", lib);
+        } else {
+            println!("cargo:rustc-link-lib=static=RDKit{}_static", lib);
+        }
+    }
+
+    if !link_statically {
+        println!("cargo:rustc-link-lib=dylib=boost_serialization");
+    } else {
+        println!("cargo:rustc-link-lib=static=boost_serialization");
+    }
 }

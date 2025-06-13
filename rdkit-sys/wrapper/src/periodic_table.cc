@@ -1,5 +1,5 @@
 #include "rust/cxx.h"
-#include <rdkit/GraphMol/PeriodicTable.h>
+#include <GraphMol/PeriodicTable.h>
 
 namespace RDKit {
 std::unique_ptr<PeriodicTable> get_periodic_table() {

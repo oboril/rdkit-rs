@@ -21,3 +21,4 @@ which = "4.4.2"
 [features]
 default = []
 dynamic-linking-from-conda = []
+static-linking = []
